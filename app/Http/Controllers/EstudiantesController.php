@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\estudiantes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EstudiantesController extends Controller
 {
     public function readStudent()
     {
-        return view('Estudiante.ReadStudent');
+        $data['student'] = estudiantes::paginate(3);
+
+        return view('Estudiante.ReadStudent', $data);
+
     }
 
     public function formStudent()
@@ -20,6 +24,8 @@ class EstudiantesController extends Controller
 
     public function createStudent(Request $request)
     {
+        $dataStudent = request()->except('_token');
+
         $validator = $this->validate($request, [
             'nombre'=> 'required|string|max:255',
             'foto'=>'required:estudiante',
@@ -29,13 +35,19 @@ class EstudiantesController extends Controller
 
         ]);
 
-        $dataStudent = request()->except('_token');
-        estudiantes::insert($dataStudent);
-
         /* Guardar Imagen */
         if($request->hasFile('foto')){
             $datostuden['foto']=$request->file("foto")->store('image', 'public');
         }
+
+        estudiantes::create([
+            'nombre' => $validator['nombre'],
+            'foto' => $datostuden['foto'],
+            'correo' => $validator['correo'],
+            'semestre' => $validator['semestre'],
+            'edad' => $validator['edad'],
+
+        ]);
 
         return back()->with('studenGuardado', 'Estudiante Guardado');
     }
