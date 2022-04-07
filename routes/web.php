@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [EstudiantesController::class,'readStudent']);
 
 /* Formulario de Estudiante */
-Route::get('/form', [EstudiantesController::class,'formStudent']);
+Route::get('/Estudiante/Formulario', [EstudiantesController::class,'formStudent']);
 
 /* Create Estudiante */
 Route::post('/Estudiante/crearStuden', [EstudiantesController::class,'createStudent'])->name('Estudiante.save');
