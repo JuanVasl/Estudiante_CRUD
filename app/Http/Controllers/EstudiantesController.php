@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\estudiantes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EstudiantesController extends Controller
 {
@@ -52,18 +53,42 @@ class EstudiantesController extends Controller
         return back()->with('studenGuardado', 'Estudiante Guardado');
     }
 
-    public function editStudent(estudiantes $estudiantes)
+    public function editStudent($carne)
     {
-        //
+        $student= estudiantes::findOrFail($carne);
+
+        return view('Estudiante.UpdateStudent', compact('student'));
     }
 
-    public function updateStudent(Request $request, estudiantes $estudiantes)
+    public function updateStudent(Request $request, $carne)
     {
-        //
+        $data = request()->except((['_token', '_method']));
+
+        //Editar foto
+        if($request->hasFile('foto')){
+
+            $studen= estudiantes::findOrFail($carne);
+
+            Storage::delete('public/'.$studen->foto);
+
+            $data['foto']=$request->file("foto")->store('uploads', 'public');
+        }
+
+        estudiantes::where('carne', '=', $carne)->update($data);
+        $studen= estudiantes::findOrFail($carne);
+
+        return back()->with('studenModificado', 'Estudiante Modificado', compact('studen'));
     }
 
-    public function deleteStudent(estudiantes $estudiantes)
+    public function deleteStudent($carne)
     {
-        //
+        $student= estudiantes::findOrFail($carne);
+
+        if(Storage::delete('public/'.$student->foto)){
+
+            estudiantes::destroy($carne);
+        }
+
+        return back()->with('studenEliminado', 'Estdudiante Eliminado');
     }
 }
