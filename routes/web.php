@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CursosController;
 use App\Http\Controllers\EstudiantesController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,13 @@ Route::get('/editform/{carne}', [EstudiantesController::class,'editStudent'])->n
 
 /* Update Estudiante */
 Route::patch('/edit/{carne}', [EstudiantesController::class, 'updateStudent'])->name('Estudiante.update');
+
+/* Read Cursos */
+Route::get('/Curso', [CursosController::class,'readCourse']);
+
+/* Formulario de Cursos */
+Route::get('/Curso/Formulario', [CursosController::class,'formCourse']);
+
+/* Create Curso */
+Route::post('/Curso/crearCourse', [CursosController::class,'createCourse'])->name('Curso.save');
+

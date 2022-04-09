@@ -10,7 +10,7 @@ class cursos extends Model
     protected $table='cursos';
     public $timestamps=false;
     protected $fillable=[
-        'id_cursos', 'descripción',
+        'id_cursos', 'descripcion',
     ];
 
     protected $primaryKey = 'id_cursos';
