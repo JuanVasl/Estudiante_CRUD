@@ -28,9 +28,9 @@ class EstudiantesController extends Controller
         $dataStudent = request()->except('_token');
 
         $validator = $this->validate($request, [
-            'nombre'=> 'required|string|max:255',
+            'nombre'=> 'required|string|max:45',
             'foto'=>'required:estudiante',
-            'correo'=>'required|string|max:255',
+            'correo'=>'required|string|max:70',
             'semestre'=>'required|max:20|string',
             'edad'=>'required|max:2|string'
 
